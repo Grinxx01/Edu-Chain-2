@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Quicksand } from "next/font/google";
 import "./globals.css";
+import { ThirdwebProvider } from "thirdweb/react";
 
 const quicksand = Quicksand({
   variable: "--font-quicksand",
@@ -20,7 +21,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={quicksand.variable}>
-        {children}
+        <ThirdwebProvider>
+          {children}
+        </ThirdwebProvider>
       </body>
     </html>
   );

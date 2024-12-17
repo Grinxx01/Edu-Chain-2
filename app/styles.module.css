@@ -68,6 +68,9 @@
 .start, .loginMenu {
     border: 1px solid black;
     border-radius: 12px;
+}
+
+.start {
     padding: 10px 25px;
 }
 

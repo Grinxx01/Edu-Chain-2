@@ -1,34 +1,59 @@
+"use client"; // Penting karena ini Client Component
+
 import React from "react";
 import styles from "../styles.module.css";
-import Link from "next/link";
+import { ConnectButton } from "thirdweb/react";
+import { client } from "../lib/client";
+
+const callAuthApi = async (action: string, params?: any) => {
+  const response = await fetch("/api/auth/" + action, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ action, params }),
+  });
+  return response.json();
+};
 
 const Header = () => {
   return (
     <header className={styles.header}>
-      	<div className={styles.headContainer}>
-    		<div className={styles.logo}>
-    	 		<h1 className={styles.title}>EduChain</h1>
-  	    	</div>
+      <div className={styles.headContainer}>
+        <div className={styles.logo}>
+          <h1 className={styles.title}>EduChain</h1>
+        </div>
 
-        	<nav className={styles.navBar}>
-        		<ul>
-            		<li><Link href="/">Home</Link></li>
-            		<li><Link href="/pages/education">Education</Link></li>
-            		<li><Link href="/pages/docs">Docs</Link></li>
-          		</ul>
-        	</nav>
+        <nav className={styles.navBar}>
+          <ul>
+            <li>Home</li>
+            <li>Education</li>
+            <li>Docs</li>
+          </ul>
+        </nav>
 
-        	<div className={styles.loginMenu}>
-          		<div className={styles.login}>
-				  <Link href="/auth/login">Login</Link>
-          		</div>
-				<div>|</div>
-          		<div className={styles.signUp}>
-				  <Link href="/auth/signup">Sign Up</Link>
-          		</div>
-        	</div>
-      	</div>
+        <div className={styles.loginMenu}>
+          <ConnectButton
+            client={client}
+            auth={{
+              isLoggedIn: async () => {
+                const res = await callAuthApi("isLoggedIn");
+                return res.result;
+              },
+              doLogin: async (params) => {
+                await callAuthApi("login", params);
+              },
+              getLoginPayload: async ({ address }) => {
+                const res = await callAuthApi("generatePayload", { address });
+                return res.payload;
+              },
+              doLogout: async () => {
+                await callAuthApi("logout");
+              },
+            }}
+          />
+        </div>
+      </div>
     </header>
   );
 };
+
 export default Header;
