@@ -1,9 +1,9 @@
-"use client"; // Penting karena ini Client Component
+"use client";
 
 import React from "react";
 import styles from "../styles.module.css";
-import { ConnectButton } from "thirdweb/react";
-import { client } from "../lib/client";
+import Link from "next/link";
+import LoginButton from "../components/loginbutton";
 
 const callAuthApi = async (action: string, params?: any) => {
   const response = await fetch("/api/auth/" + action, {
@@ -23,33 +23,16 @@ const Header = () => {
         </div>
 
         <nav className={styles.navBar}>
-          <ul>
-            <li>Home</li>
-            <li>Education</li>
-            <li>Docs</li>
-          </ul>
+			<ul>
+          		<li><Link href="/">Home</Link></li>
+        		<li><Link href="/pages/education">Education</Link></li>
+        		<li><Link href="/pages/docs">Docs</Link></li>
+        	</ul>
         </nav>
 
+
         <div className={styles.loginMenu}>
-          <ConnectButton
-            client={client}
-            auth={{
-              isLoggedIn: async () => {
-                const res = await callAuthApi("isLoggedIn");
-                return res.result;
-              },
-              doLogin: async (params) => {
-                await callAuthApi("login", params);
-              },
-              getLoginPayload: async ({ address }) => {
-                const res = await callAuthApi("generatePayload", { address });
-                return res.payload;
-              },
-              doLogout: async () => {
-                await callAuthApi("logout");
-              },
-            }}
-          />
+		<LoginButton/>		
         </div>
       </div>
     </header>

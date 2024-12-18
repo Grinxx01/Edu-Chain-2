@@ -16,7 +16,7 @@ const Main = () => {
                     <br />cutting-edge skills
                 </p>
                 <div className={Styles.start}>
-                    <Link href="/auth/login">Start Now</Link>
+                    <Link href="/pages/education">Start Now</Link>
                 </div>
             </div>
             <div className={Styles.heroImg}>
