@@ -2,8 +2,13 @@ import React from "react";
 import styles from "../../styles.module.css";
 import Link from "next/link";
 import Header from "@/app/components/header";
+import { redirect } from "next/navigation";
+import { isLoggedIn } from "../../actions/login";
 
-const Instructor = () => {
+const Instructor = async () => {
+    if (!(await isLoggedIn())) {
+        redirect("/connect-button");
+      }
     return (
         <div className={styles.container}>
             <Header />
